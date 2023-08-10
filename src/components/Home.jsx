@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { getTimeTable } from "../Firebase/Auth";
 import ClassView from "./ClassView"
 import PeriodInfoObject from "./PeriodInfoObject";
@@ -5,13 +6,37 @@ import TimeTableObject from "./TimeTableObject";
 
 export default function Home() {
 
+  const [timeTables, setTimeTables] = useState(null)
+
+  function handleGet(e) {
+    e.preventDefault()
+
+    var room = document.getElementById("get-selector-room").value
+    var day = document.getElementById("get-selector-day").value
+
+    console.log(room, day)
+
+  }
+
   return (
     <section className="home">
-      
-      <button onClick={() => getTimeTable(2104)}>Get</button>
+
+      <label htmlFor="get-selector-room">Room No: </label>
+      <input type="text" id="get-selector-room" name="get-selector-room"/>
+
+      <label htmlFor="get-selector-day">Day: </label>
+      <select name="get-selector-day" id="get-selector-day">
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+      </select>
+        
+      <button onClick={handleGet}>Get</button>
 
       {/* <TimeTable></TimeTable> */}
-      <ClassView classData={exampleClass}></ClassView>
+      {/* <ClassView classData={exampleClass}></ClassView> */}
 
     </section>
   )

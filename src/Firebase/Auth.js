@@ -22,6 +22,23 @@ export function setClass(classdata) {
   set(r, classdata)
 }
 
+export async function getTimeTableBySemster(semesterNo) {
+  var r = child(ref(db), `/${semesterNo}`)
+
+  var jsonData = {}
+
+  await get(r)
+  .then(snapshot => {
+    console.log(snapshot)
+    if (snapshot.exists()) {
+      jsonData = snapshot.val()
+    }
+  })
+  .catch(err => console.log(err))
+
+  return jsonData
+}
+
 export async function getTimeTable(room_no = null) {
   var r = child(ref(db), '/')
 
@@ -68,4 +85,10 @@ function filterSemestersByRoom(jsonData, roomNumber) {
   }
 
   return filteredSemesters;
+}
+
+export function getTodayDay() {
+  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  var today = new Date()
+  return days[today.getDay()]
 }
