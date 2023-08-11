@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import TimeTableObject from './TimeTableObject';
 import { setClass } from '../Firebase/Auth';
 
-function ClassView({ classData }) {
+import './ClassView.sass'
+
+export default function ClassView({ classData }) {
     const [editing, setEditing] = useState(false);
     const [editedSem, setEditedSem] = useState(classData ? classData.sem : 1)
     const [editedRepName, setEditedRepName] = useState(classData ? classData.repName : "-");
@@ -64,37 +66,39 @@ function ClassView({ classData }) {
     };
 
     return (
-        <div>
+        <div className='class-view'>
             <h2>Class Information</h2>
-            <div>
-              <strong>Semester + Section:</strong>
-              <input
-                    type="text"
-                    value={editedSem}
-                    onChange={(e) => handleSemChange(e)}
-                    disabled={!editing}
-                />
+            <div className="class-info">
+                <div className='details sem'>
+                    <span>Semester / Section</span>
+                    <input
+                            type="text"
+                            value={editedSem}
+                            onChange={(e) => handleSemChange(e)}
+                            disabled={!editing}
+                        />
+                </div>
+                <div className='details rep'>
+                    <span>Class Representative</span>
+                    <input
+                        type="text"
+                        value={editedRepName}
+                        onChange={(e) => handleNameChange(e, true)}
+                        disabled={!editing}
+                    />
+                </div>
+                <div className='details coord'>
+                    <span>Class Coordinator</span>
+                    <input
+                        type="text"
+                        value={editedCoordName}
+                        onChange={(e) => handleNameChange(e, false)}
+                        disabled={!editing}
+                    />
+                </div>
             </div>
-            <div>
-                <strong>Class Representative:</strong>
-                <input
-                    type="text"
-                    value={editedRepName}
-                    onChange={(e) => handleNameChange(e, true)}
-                    disabled={!editing}
-                />
-            </div>
-            <div>
-                <strong>Class Coordinator:</strong>
-                <input
-                    type="text"
-                    value={editedCoordName}
-                    onChange={(e) => handleNameChange(e, false)}
-                    disabled={!editing}
-                />
-            </div>
-            <div>
-                <h3>Time Table:</h3>
+            <div className='time-table'>
+                {/* <h3>Time Table:</h3> */}
                 <table>
                     <thead>
                         <tr>
@@ -107,9 +111,10 @@ function ClassView({ classData }) {
                     <tbody>
                         {daysOfWeek.map((day, dayIndex) => (
                             <tr key={dayIndex}>
-                                <td>{day}</td>
+                                <th>{day}</th>
                                 {editedTimetable.schedule[day]?.map((classInfo, classIndex) => (
                                     <td key={`${day}-${classIndex}`}>
+                                    <div className="wrapper">
                                         <input
                                             type="text"
                                             placeholder="Subject"
@@ -131,23 +136,26 @@ function ClassView({ classData }) {
                                             onChange={(e) => handleClassInfoChange(e, dayIndex, classIndex, 'room')}
                                             disabled={!editing}
                                         />
+                                    </div>
                                     </td>
                                 ))}
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                
             </div>
-            {editing ? (
-                <>
-                    <button onClick={handleSaveClick}>Save</button>
-                    {/* <button onClick={handleCancelClick}>Cancel</button> */}
-                </>
-            ) : (
-                <button onClick={handleEditClick}>Edit</button>
-            )}
+            <div className="buttons">
+                {editing ? (
+                    <>
+                        <button onClick={handleSaveClick}>Save</button>
+                        <div className="editing-viz">Editing</div>
+                        {/* <button onClick={handleCancelClick}>Cancel</button> */}
+                    </>
+                ) : (
+                    <button onClick={handleEditClick}>Edit</button>
+                )}
+            </div>
         </div>
     );
 }
-
-export default ClassView;

@@ -1,0 +1,101 @@
+// // Cinzel
+// @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&display=swap')
+// // Inter
+// @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap')
+
+// $Cinzel: 'Cinzel', serif
+// $Inter: 'Inter', sans-serif
+
+// // Colors
+// $background: #004cbe
+// $foreground: white
+
+@import "./__base"
+
+* 
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+  list-style: none
+  font-family: $Inter
+
+body
+  font-size: 16px
+  
+a
+  color: inherit
+  text-decoration: none
+
+input
+  outline: none
+  border: none
+
+// CUSTOM CSS
+
+.main
+  min-height: 100vh
+  display: flex
+  flex-direction: column
+
+  // background-color: rgb(18, 18, 18)
+
+  & > section
+    flex: 1
+
+header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  background-color: $background
+  color: $foreground
+  
+  & > *
+    margin: 0.5rem 2rem
+
+  h1
+    font-size: 2em
+    font-weight: 300
+    // text-transform: uppercase
+    font-family: $Cinzel
+
+  ul
+    display: flex
+    justify-content: space-around
+    align-items: center
+    font-weight: 600
+    text-transform: uppercase
+    font-size: 0.8em
+    letter-spacing: 0.1em
+    
+    li
+      a
+        padding: 0.25em 0.7em
+        background-color: transparent
+        border-radius: 20px
+        transition: background-color 150ms ease, color 150ms ease
+        &:hover
+          background-color: $foreground
+          color: $background
+
+      & + li
+        margin-left: 3em
+
+
+
+
+footer
+  display: flex
+  justify-content: space-between
+  align-items: center
+  background-color: $background
+  color: $foreground
+
+  & > *
+    margin: 0.5rem 2rem
+
+  h2
+    flex: 1
+    text-align: right
+    font-size: 0.8em
+    font-weight: 400
+    // text-transform: uppercase

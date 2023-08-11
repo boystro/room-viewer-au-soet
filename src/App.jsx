@@ -1,7 +1,7 @@
-import { Route, Routes, Link } from "react-router-dom";
-import Home from "./components/Home";
-import Create from "./components/Create";
-import Edit from "./components/Edit";
+import { Route, Routes, Link } from "react-router-dom"
+import Home from "./Home"
+import Create from "./Create"
+import Edit from "./Edit"
 // import TimeTable from "./components/TimeTable";
 
 export default function App() {
@@ -9,7 +9,7 @@ export default function App() {
     <section className="main">
 
       <header>
-        SOET Time Table App
+        <h1>SOET Time Table App</h1>
         <ul>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/edit">Edit</Link></li>
@@ -25,7 +25,7 @@ export default function App() {
       </Routes>
 
       <footer>
-        &copy; SOET, Adamas Unviersity
+        <h2>&copy; SOET, Adamas Unviersity</h2>
       </footer>
 
     </section>
