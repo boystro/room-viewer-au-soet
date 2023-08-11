@@ -99,9 +99,16 @@ function filterSemestersByRoom(jsonData, roomNumber) {
       const dailySchedule = timetable[dayOfWeek];
 
       for (const entry of dailySchedule) {
-        if (entry.room === roomNumber) {
-          filteredSemesters.push(semester);
-          break;
+        // previous logic
+        var roomStr = entry.room.toString()
+        if (roomStr === "0")
+          continue
+
+        roomStr = roomStr.split(',')
+        if (roomStr.includes(roomNumber)) {
+          console.log(roomStr)
+          filteredSemesters.push(semester)
+          break
         }
       }
       
