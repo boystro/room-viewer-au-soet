@@ -22,7 +22,26 @@ export function setClass(classdata) {
   set(r, classdata)
 }
 
-export async function getTimeTableBySemster(semesterNo) {
+export async function getAllRooms() {
+  var r = child(ref(db), '/')
+
+  var jsonData = {}
+
+  await get(r)
+  .then(snapshot => {
+    console.log(snapshot)
+    var found = snapshot.exists()
+    if (found) {
+      jsonData = snapshot.val()
+    }
+  })
+  .catch(err => console.log(err))
+
+  return extractRoomNumbers(jsonData)
+}
+
+
+export async function getTimeTableBySemester(semesterNo) {
   var r = child(ref(db), `/${semesterNo}`)
 
   var found = true
@@ -65,8 +84,8 @@ export async function getTimeTable(room_no) {
   })
   .catch(error => console.error(error) )
 
-  var r = {data:filterSemestersByRoom(jsonData, room_no.toString()),found:found}
-  return r
+  var ret = {data:filterSemestersByRoom(jsonData, room_no.toString()),found:found}
+  return ret
 }
 
 function filterSemestersByRoom(jsonData, roomNumber) {
@@ -96,3 +115,26 @@ function filterSemestersByRoom(jsonData, roomNumber) {
   return filteredSemesters;
 }
 
+function extractRoomNumbers(jsonData) {
+  const roomNumbers = new Set();
+
+  for (const semesterNumber in jsonData) {
+    const semester = jsonData[semesterNumber];
+    const timetable = semester.timetable?.schedule || {};
+    for (const dayOfWeek in timetable) {
+      const dailySchedule = timetable[dayOfWeek];
+      for (const entry of dailySchedule) {
+        var roomStr = entry.room
+        // console.log(roomStr)
+        if (roomStr && roomStr !== "0") {
+          const rooms = roomStr.split(',');
+          for (const room of rooms) {
+            roomNumbers.add(room.trim());
+          }
+        }
+      }
+    }
+  }
+
+  return Array.from(roomNumbers).sort();
+}

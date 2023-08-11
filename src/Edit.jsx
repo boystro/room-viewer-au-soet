@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ClassView from "./components/ClassView";
-import { getTimeTableBySemster } from "./Firebase/Auth";
+import { getTimeTableBySemester } from "./Firebase/Auth";
 
 import './Edit.sass'
 
@@ -14,7 +14,7 @@ export default function Edit() {
 
     var data = document.getElementById("get-data-semester").value
     // console.log(data)
-    getTimeTableBySemster(data)
+    getTimeTableBySemester(data)
     .then(arg => {
 
       console.log("Received : ", arg)

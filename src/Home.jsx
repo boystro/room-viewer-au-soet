@@ -1,12 +1,22 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import PeriodInfoObject from "./components/PeriodInfoObject"
 import TimeTableObject from "./components/TimeTableObject"
 import ClassView from "./components/ClassView"
-import { getTimeTable } from "./Firebase/Auth"
+import { getAllRooms, getTimeTable } from "./Firebase/Auth"
 import './Home.sass'
 import ScheduleView from "./components/ScheduleView"
 
 export default function Home() {
+
+  const [rooms, setRooms] = useState([])
+
+  useEffect(() => {
+    getAllRooms()
+    .then(arg => {
+      console.log(arg)
+      setRooms(arg)
+    })
+  }, [])
 
   const [timeTables, setTimeTables] = useState([])
   const [day, setDay] = useState(null)
@@ -36,9 +46,16 @@ export default function Home() {
 
       <h2>Get Schedule</h2>
 
-      <div className="input-row">
+      {/* <div className="input-row">
         <label htmlFor="get-selector-room">Room No</label>
         <input type="text" id="get-selector-room" name="get-selector-room"/>
+      </div> */}
+
+      <div className="input-row">
+        <label htmlFor="get-selector-room">Room No</label>
+        <select name="get-selector-room" id="get-selector-room">
+          {rooms.map((value, key) => <option value={value} key={key}>{value}</option>)}
+        </select>
       </div>
 
       <div className="input-row">
