@@ -25,39 +25,48 @@ export function setClass(classdata) {
 export async function getTimeTableBySemster(semesterNo) {
   var r = child(ref(db), `/${semesterNo}`)
 
+  var found = true
   var jsonData = {}
+
+  if (semesterNo === "") {
+    return {
+      found:false,
+      data:{}
+    }
+  }
 
   await get(r)
   .then(snapshot => {
     console.log(snapshot)
-    if (snapshot.exists()) {
+    found = snapshot.exists()
+    if (found) {
       jsonData = snapshot.val()
     }
   })
   .catch(err => console.log(err))
 
-  return jsonData
+  return {found:found,data:jsonData}
 }
 
-export async function getTimeTable(room_no = null) {
+export async function getTimeTable(room_no) {
   var r = child(ref(db), '/')
 
+  if (room_no === "")
+    return { found:false, data:[] }
+
+  var found = true
   var jsonData = {}
 
   await get(r)
   .then(snapshot => {
-    if (snapshot.exists()) {
-      console.log(snapshot.val())
+    found = snapshot.exists()
+    if (found)
       jsonData = snapshot.val()
-    } else {
-      console.log("no snapshot")
-    }
   })
-  .catch(error => {
-    console.error(error)
-  })
+  .catch(error => console.error(error) )
 
-  console.log(filterSemestersByRoom(jsonData, room_no.toString()))
+  var r = {data:filterSemestersByRoom(jsonData, room_no.toString()),found:found}
+  return r
 }
 
 function filterSemestersByRoom(jsonData, roomNumber) {
@@ -87,8 +96,3 @@ function filterSemestersByRoom(jsonData, roomNumber) {
   return filteredSemesters;
 }
 
-export function getTodayDay() {
-  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  var today = new Date()
-  return days[today.getDay()]
-}

@@ -1,0 +1,44 @@
+@import '../__base'
+
+.schedule-view
+  margin: 1em 0
+
+  .schedule-element
+    border: 1px solid black
+    border-radius: 8px
+    padding: 0.5em
+    font-size: 0.8em
+    position: relative
+    overflow: hidden
+
+    .subject
+      font-size: 1.2em
+      font-weight: 700
+      margin-bottom: 0.25em
+
+    .teacher
+      color: transparentize(black, 0.3)
+
+    .period
+      bottom: 0
+      right: 0
+      position: absolute
+      background: black
+      color: white
+      padding: 0.15em 1em
+      border-top-left-radius: 4px
+
+    .room
+      color: transparentize(black, 0.3)
+      font-size: 0.8em
+      margin-top: 1em
+
+    span
+      display: inline-block
+      font-weight: 600
+      text-transform: uppercase
+      margin-right: 1em
+      width: 50px
+
+    & + .schedule-element
+      margin-top: 1em

@@ -2,6 +2,8 @@ import { useState } from "react";
 import ClassView from "./components/ClassView";
 import { getTimeTableBySemster } from "./Firebase/Auth";
 
+import './Edit.sass'
+
 export default function Edit() {
   
   const [classData, setClassData] = useState(null)
@@ -13,20 +15,25 @@ export default function Edit() {
     var data = document.getElementById("get-data-semester").value
     // console.log(data)
     getTimeTableBySemster(data)
-    .then(timetable => {
-      setClassData(timetable)
-      console.log(data, timetable)
-    })
-    .catch(() => console.log("No Data"))
+    .then(arg => {
 
-    
+      console.log("Received : ", arg)
+
+      if (arg.found) {
+        setClassData(arg.data)
+        console.log(data, arg.data)
+      }
+    })
+    .catch(() => console.log("No Data"))  
   }
 
   return (
     <section className="edit">
-      <label htmlFor="get-data-semester">Get Data For Semester: </label>
-      <input type="text" id="get-data-semester" name="get-data-semester"/>
-      <button onClick={handleGetData}>GET</button>
+      <label htmlFor="get-data-semester">Edit Semester Timetable</label>
+      <div className="get-data">
+        <input type="text" id="get-data-semester" name="get-data-semester" placeholder="Semester / Section" autoComplete="off"/>
+        <button onClick={handleGetData}>Get</button>
+      </div>
       {
         classData != null ?
           <ClassView classData={classData}></ClassView>:

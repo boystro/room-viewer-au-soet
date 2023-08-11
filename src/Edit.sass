@@ -1,0 +1,45 @@
+@import './__base'
+
+.edit
+  display: flex
+  flex-direction: column
+  align-items: center
+  margin: 1em 0
+
+  label 
+    font-size: 1.1em
+    font-weight: 600
+    margin-bottom: 0.4em
+  
+  .get-data
+    border-radius: 32px
+    background-color: $background
+    // border: 1px solid black
+    overflow: hidden
+    padding: 0.25em
+    padding-left: 1.1em
+
+    button
+      cursor: pointer
+      background: transparent
+      border: none
+      border-radius: 20px
+      height: 32px
+      width: 32px
+      color: white
+      background-color: transparentize(white, 0.8)
+
+      &:hover
+        background-color: white
+        color: $background
+
+  input
+    background-color: transparent
+    color: white
+    width: 140px
+    text-align: center
+    
+    &::placeholder 
+      color: transparentize(white, 0.33)
+
+  
