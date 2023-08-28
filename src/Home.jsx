@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import PeriodInfoObject from "./components/PeriodInfoObject"
 import TimeTableObject from "./components/TimeTableObject"
 import ClassView from "./components/ClassView"
-import { getAllRooms, getTimeTable } from "./Firebase/Auth"
+import { getAllRooms, getDaySchedule, getTimeTable } from "./Firebase/Auth"
 import './Home.sass'
 import ScheduleView from "./components/ScheduleView"
 
@@ -11,34 +11,25 @@ export default function Home() {
   const [rooms, setRooms] = useState([])
 
   useEffect(() => {
-    getAllRooms()
-    .then(arg => {
-      console.log(arg)
-      setRooms(arg)
-    })
+    getAllRooms().then(arg => setRooms(arg))
   }, [])
 
-  const [timeTables, setTimeTables] = useState([])
-  const [day, setDay] = useState(null)
+  const [schedules, setSchedules] = useState(null)
+  // const [day, setDay] = useState(null)
 
-  function handleGet(e) {
-    e.preventDefault()
-    setTimeTables([])
-    setDay(null)
-    var room = document.getElementById("get-selector-room").value
-    var day = document.getElementById("get-selector-day").value
-    setDay(day)
-    getTimeTable(room)
-    .then(args => {
+  async function handleGet(e) {
+    const room_no = document.getElementById("get-selector-room").value;
+    const day = document.getElementById("get-selector-day").value;
 
-      console.log("Home Page: Args : ", args)
-
-      if (args.found)
-        setTimeTables(args.data)
-
-      console.log(timeTables)
+    await getDaySchedule(room_no, day)
+    .then(r => {
+      setSchedules(null);
+      if (r.found) {
+        setSchedules(r.data);
+      }
     })
-    .catch(err => console.error(err))
+
+    console.log(schedules);
   }
 
   return (
@@ -75,9 +66,15 @@ export default function Home() {
       {/* <ClassView classData={exampleClass}></ClassView> */}
       {/* <ScheduleView day={"Monday"}></ScheduleView> */}
 
+
+      {schedules && schedules.length == 0 ?
+        <div className="not-found">
+          Not-Found
+        </div>
+      : null}
       
-      {timeTables.map((timetable, index) =>
-          <ScheduleView key={index} sem={timetable} day={day}></ScheduleView>
+      {schedules?.map((schedule, index) =>
+          <ScheduleView key={index} schedule={schedule}></ScheduleView>
       )}
     </section>
   )

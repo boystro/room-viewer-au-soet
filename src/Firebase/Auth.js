@@ -29,15 +29,56 @@ export async function getAllRooms() {
 
   await get(r)
   .then(snapshot => {
-    console.log(snapshot)
     var found = snapshot.exists()
-    if (found) {
+    if (found)
       jsonData = snapshot.val()
-    }
   })
   .catch(err => console.log(err))
 
   return extractRoomNumbers(jsonData)
+}
+
+export async function getDaySchedule(room_no, day) {
+  
+  if (room_no === "" || day === "")
+    return { found: false, data:[] };
+
+  
+  var found = true;
+  var data = {};
+  
+  var dbr = child(ref(db), `/`);
+  await get(dbr)
+  .then(snapshot => {
+    found = snapshot.exists();
+    if (found)
+      data = snapshot.val();
+  })
+  .catch(e => console.error(e));
+
+  return { data:filterSemestersByRoomAndDay(data,room_no,day), found:found };
+}
+
+function filterSemestersByRoomAndDay(data, room, day) {
+  var filteredData = [];
+
+  for (const semesterNumber in data) {
+    const semester = data[semesterNumber];
+    const timetable = semester.timetable?.schedule || {};
+    const dailySchedule = timetable[day];
+    for (const entry of dailySchedule) {
+      var roomStr = entry.room.toString();
+      if (roomStr === "0") continue;
+
+      roomStr = roomStr.split(',');
+      if (roomStr.includes(room)) {
+        filteredData.push([semesterNumber, dailySchedule]);
+        break;
+      }
+    }
+  }
+
+  return filteredData;
 }
 
 

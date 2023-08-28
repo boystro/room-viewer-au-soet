@@ -4,16 +4,17 @@ import './ScheduleView.sass'
 
 export default function ScheduleView(props) {
 
-  const [data, setData] = useState(null)
+  const [data, setData] = useState([])
 
   useEffect(() => {
-    setData(props.sem.timetable.schedule[props.day ?? getTodayDay()])
-    // console.log(data)
-  }, [])
+    // setData(props.sem.timetable.schedule[props.day ?? getTodayDay()])
+    setData(props.schedule[1] ?? [])
+    console.log(data)
+  }, [props])
 
   return (
-    <div className="schedule-view">
-      <h2>Semester <span>{props.sem.sem}</span></h2>
+    <div className="schedule-view" key={props.key}>
+      <h2>Semester <span>{props.schedule[0]}</span></h2>
       {data?.map((value, i) => 
         value.subject === "-" ? null:
         <div className="schedule-element" key={i}>
@@ -25,10 +26,4 @@ export default function ScheduleView(props) {
       )}
     </div>
   )
-}
-
-function getTodayDay() {
-  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  var today = new Date()
-  return days[today.getDay()]
 }
