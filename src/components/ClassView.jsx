@@ -112,7 +112,7 @@ export default function ClassView({ classData }) {
                         {daysOfWeek.map((day, dayIndex) => (
                             <tr key={dayIndex}>
                                 <th>{day}</th>
-                                {editedTimetable.schedule[day]?.map((classInfo, classIndex) => (
+                                {editedTimetable?.schedule[day]?.map((classInfo, classIndex) => (
                                     <td key={`${day}-${classIndex}`}>
                                     <div className="wrapper">
                                         <input
